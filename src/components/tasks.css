@@ -21,9 +21,8 @@ button {
 }
 
 .red {
-  background-color: #9e2b2b; 
+  background-color: #9e2b2b;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
 }
 .red:hover {
   background-color: #7a2121;
@@ -37,6 +36,7 @@ button {
   width: 800px;
   height: 80vh;
   gap: 10px;
+  overflow-y: auto;
 }
 
 .actions {
@@ -44,12 +44,10 @@ button {
   gap: 5px;
 }
 
-.completed{
-    text-decoration: dashed;
-    opacity: 0.7;
+.completed {
+  text-decoration: dashed;
+  opacity: 0.7;
 }
-
-
 
 .task {
   display: flex;
@@ -75,8 +73,7 @@ button {
   justify-content: flex-start;
   flex-direction: row;
   gap: 8px;
-  margin-top: 15px;
-
+  margin-top: 7px;
 }
 
 .priority,
@@ -115,4 +112,41 @@ button {
 .completed {
   text-decoration: line-through;
   color: #999;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 7px;
+}
+
+.categories {
+  display: flex;
+  gap: 5px;
+}
+.create-task > button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 7px 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: #2c6830;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.filter > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2c6830;
+  gap: 10px;
 }
