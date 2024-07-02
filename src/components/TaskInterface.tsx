@@ -1,8 +1,6 @@
 export interface Task {
-    task:string,
-    category:string,
-    isCompleted:boolean,
-    priority:string,
-    markCompleted:()=>void
-    deleteTask:()=>void
+  task: string;
+  category: string;
+  isCompleted: boolean;
+  isUrgent: boolean;
 }

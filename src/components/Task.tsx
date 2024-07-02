@@ -1,20 +1,46 @@
-import { Task as TaskType} from "./TaskInterface";
+import { Task as TaskType } from "./TaskInterface";
 import "./tasks.css";
 
-const Task = (props: TaskType) => {
+export interface TaskProps extends TaskType {
+  markCompleted: (task: string) => void;
+  deleteTask: (task: string) => void;
+}
+
+const Task = (props: TaskProps) => {
+  console.log(props);
   return (
     <div className="task">
       <div className="task-content">
-        <p className={`task-name ${props.isCompleted && "completed"}`}>{props.task}</p>
-        {!props.isCompleted &&  <div className="info">
-          <p className="priority">{props.priority}</p>
-          <p className="category">{props.category}</p>
-        </div>}
+        <p className={`task-name ${props.isCompleted && "completed"}`}>
+          {props.task}
+        </p>
+        {!props.isCompleted && (
+          <div className="info">
+            <p className="category">{props.category}</p>
+            {props.isUrgent && <p className="priority"> urgent</p>}
+          </div>
+        )}
       </div>
       <div>
         <div className="actions">
-        {!props.isCompleted && <button className="action green" onClick={props.markCompleted}>complete</button>}
-          <button className="action red" onClick={props.deleteTask}>delete</button>
+          {!props.isCompleted && (
+            <button
+              className="action green"
+              onClick={() => {
+                props.markCompleted(props.task);
+              }}
+            >
+              complete
+            </button>
+          )}
+          <button
+            className="action red"
+            onClick={() => {
+              props.deleteTask(props.task);
+            }}
+          >
+            delete
+          </button>
         </div>
       </div>
     </div>
