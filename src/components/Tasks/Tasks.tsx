@@ -3,13 +3,17 @@ import { useEffect, useState } from "react";
 import Task from "./Task";
 import "./tasks.css";
 import CreateTask from "./CreateTask";
+import { useContext } from "react";
+import { BuddiesContext } from "../BuddiesContext";
+import { Buddy } from "../WorkBuddies/BuddyInterface";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [openCreateTask, setOpenCreateTask] = useState(false);
- const categories = ["work", "life", "school"];
+  const categories = ["work", "life", "school"];
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isUrgent, setIsUrgent] = useState(false);
+  const { contextData } = useContext(BuddiesContext);
 
   useEffect(() => {
     const savedTasks = localStorage.getItem("tasks");
@@ -46,7 +50,6 @@ const Tasks = () => {
       return;
     }
 
-
     setTasks((prev) => [
       ...prev,
       {
@@ -81,8 +84,17 @@ const Tasks = () => {
     );
   });
 
+  const displayContext = contextData?.map((buddy: Buddy, index) => {
+    return (
+      <div className="buddy-smaller" key={index}>
+        <img src={buddy.url} alt="buddy-image" />
+      </div>
+    );
+  });
+
   return (
     <div className="tasks">
+      <div className="buddies-smaller">{contextData && displayContext}</div>
       {!openCreateTask && (
         <button
           onClick={() => {

@@ -1,16 +1,15 @@
 import React, {
   Fragment,
   useCallback,
+  useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
 import "./work-buddies.css";
 import classNames from "classnames";
-type Buddy = {
-  name: string;
-  url: string;
-};
+import { Buddy } from "./BuddyInterface";
+import { BuddiesContext } from "../BuddiesContext";
 
 const WorkBuddies = () => {
   const [buddies, setBuddies] = useState<Buddy[]>([]);
@@ -18,6 +17,9 @@ const WorkBuddies = () => {
   const [isBuddyChosen, setIsBuddyChosen] = useState<boolean>(false);
   //useRef
   const nameRef = useRef<HTMLInputElement>(null);
+
+  //useContext
+  const { contextData, setData } = useContext(BuddiesContext);
 
   //useCallback because of an expensive function
   const fetchBuddies = useCallback(async () => {
@@ -72,8 +74,27 @@ const WorkBuddies = () => {
         name: nameRef.current!.value,
       }));
     }
+
+    if (myBuddy === undefined) {
+      return;
+    }
+
+    const updatedBuddies = buddies;
+    updatedBuddies.forEach((buddy) => {
+      if (buddy.url === myBuddy.url) {
+        buddy.name = nameRef.current!.value;
+      }
+    });
+    setBuddies(updatedBuddies);
+
     setIsBuddyChosen(true);
   };
+
+  useEffect(() => {
+    if (isBuddyChosen) {
+      setData(buddies);
+    }
+  }, [isBuddyChosen]);
 
   useEffect(() => {
     console.log(myBuddy);
