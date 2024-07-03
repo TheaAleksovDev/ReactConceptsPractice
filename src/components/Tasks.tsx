@@ -7,7 +7,7 @@ import CreateTask from "./CreateTask";
 const Tasks = () => {
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [openCreateTask, setOpenCreateTask] = useState(false);
-  const categories: string[] = ["work", "life", "school"];
+ const categories = ["work", "life", "school"];
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isUrgent, setIsUrgent] = useState(false);
 
@@ -46,7 +46,6 @@ const Tasks = () => {
       return;
     }
 
-    let completed = false;
 
     setTasks((prev) => [
       ...prev,
@@ -66,28 +65,21 @@ const Tasks = () => {
   };
 
   //not the best example of currying, couldn't think of anything better
-  const displayTasks =
+  const filteredTasks =
     isUrgent && selectedCategory
-      ? filterTasks(isUrgent)(selectedCategory).map((item) => {
-          return (
-            <Task
-              key={item.task}
-              {...item}
-              markCompleted={markCompleted}
-              deleteTask={deleteTask}
-            ></Task>
-          );
-        })
-      : tasks.map((item) => {
-          return (
-            <Task
-              key={item.task}
-              {...item}
-              markCompleted={markCompleted}
-              deleteTask={deleteTask}
-            ></Task>
-          );
-        });
+      ? filterTasks(isUrgent)(selectedCategory)
+      : tasks;
+
+  const displayTasks = filteredTasks.map((item) => {
+    return (
+      <Task
+        key={item.task}
+        {...item}
+        markCompleted={markCompleted}
+        deleteTask={deleteTask}
+      />
+    );
+  });
 
   return (
     <div className="tasks">

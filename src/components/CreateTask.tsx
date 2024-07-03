@@ -8,7 +8,6 @@ const CreateTask = (props: any) => {
 
   const handleTaskChange = (event: any) => {
     setTask(event.target.value);
-    console.log(task);
   };
 
   return (
