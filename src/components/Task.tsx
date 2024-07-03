@@ -1,5 +1,6 @@
 import { Task as TaskType } from "./TaskInterface";
 import "./tasks.css";
+import classNames from 'classnames';
 
 export interface TaskProps extends TaskType {
   markCompleted: (task: string) => void;

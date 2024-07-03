@@ -50,7 +50,7 @@ const Tasks = () => {
     setTasks((prev) => [
       ...prev,
       {
-        isCompleted: completed,
+        isCompleted: false,
         category,
         task,
         isUrgent,
