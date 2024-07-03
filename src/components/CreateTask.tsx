@@ -1,14 +1,19 @@
 import { useState } from "react";
 import "./tasks.css";
 
-const CreateTask = (props: any) => {
+type CreateTaskProps = {
+  categories: string[]; 
+  createItem: (task: string, category: string, isUrgent: boolean) => void; 
+  close: () => void; 
+}
+
+const CreateTask = (props: CreateTaskProps) => {
   const [selectedCategory, setSelectedCategory] = useState(props.categories[0]);
   const [isUrgent, setIsUrgent] = useState(false);
   const [task, setTask] = useState("");
 
-  const handleTaskChange = (event: any) => {
+  const handleTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTask(event.target.value);
-    console.log(task);
   };
 
   return (
