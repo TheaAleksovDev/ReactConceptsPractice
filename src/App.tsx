@@ -1,11 +1,13 @@
 import React from 'react';
 import './App.css';
-import Tasks from './components/Tasks';
+import Tasks from './components/Tasks/Tasks';
+import WorkBuddies from './components/WorkBuddies/WorkBuddies';
 
 function App() {
   return (
     <div className="App">
-      <Tasks></Tasks>
+      <Tasks/>
+      <WorkBuddies/>
     </div>
   );
 }
