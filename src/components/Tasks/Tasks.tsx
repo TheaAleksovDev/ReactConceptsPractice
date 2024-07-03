@@ -1,5 +1,5 @@
 import { type Task as TaskType } from "./TaskInterface";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Task from "./Task";
 import "./tasks.css";
 import CreateTask from "./CreateTask";
@@ -31,11 +31,7 @@ const Tasks = () => {
     );
   };
 
-  const deleteTask = (task: string) => {
-    const filteredTasks = tasks.filter((element) => element.task !== task);
-    setTasks(filteredTasks);
-    localStorage.setItem("tasks", JSON.stringify(filteredTasks));
-  };
+
 
   useEffect(() => {
     if (tasks.length > 0) {
@@ -73,24 +69,36 @@ const Tasks = () => {
       ? filterTasks(isUrgent)(selectedCategory)
       : tasks;
 
-  const displayTasks = filteredTasks.map((item) => {
-    return (
-      <Task
-        key={item.task}
-        {...item}
-        markCompleted={markCompleted}
-        deleteTask={deleteTask}
-      />
-    );
-  });
+   //useMemo
+  const displayTasks = useMemo(()=>{
+    const deleteTask = (task: string) => {
+      const filteredTasks = tasks.filter((element) => element.task !== task);
+      setTasks(filteredTasks);
+      localStorage.setItem("tasks", JSON.stringify(filteredTasks));
+    };
 
-  const displayContext = contextData?.map((buddy: Buddy, index) => {
-    return (
-      <div className="buddy-smaller" key={index}>
-        <img src={buddy.url} alt="buddy-image" />
-      </div>
-    );
-  });
+    return filteredTasks.map((item) => {
+      return (
+        <Task
+          key={item.task}
+          {...item}
+          markCompleted={markCompleted}
+          deleteTask={deleteTask}
+        />
+      );
+    });
+  },[filteredTasks, tasks])
+
+  //useMemo
+  const displayContext = useMemo(()=>{
+    return contextData?.map((buddy: Buddy, index) => {
+      return (
+        <div className="buddy-smaller" key={index}>
+          <img src={buddy.url} alt="buddy-image" />
+        </div>
+      );
+    });
+  },[contextData])
 
   return (
     <div className="tasks">

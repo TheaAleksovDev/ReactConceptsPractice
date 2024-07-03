@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useRef,
   useState,
+  useMemo
 } from "react";
 import "./work-buddies.css";
 import classNames from "classnames";
@@ -20,6 +21,8 @@ const WorkBuddies = () => {
 
   //useContext
   const { contextData, setData } = useContext(BuddiesContext);
+
+  
 
   //useCallback because of an expensive function
   const fetchBuddies = useCallback(async () => {
@@ -53,19 +56,22 @@ const WorkBuddies = () => {
     console.log(buddies);
   }, [buddies]);
 
-  const displayBuddies = buddies.map((buddy: Buddy, index) => {
-    return (
-      <div
-        className={classNames("buddy-small", { selected: myBuddy === buddy })}
-        key={index}
-        onClick={() => {
-          setMyBuddy(buddy);
-        }}
-      >
-        <img src={buddy.url} alt="buddy-image" />
-      </div>
-    );
-  });
+  //useMemo
+  const displayBuddies = useMemo(()=>{
+    return buddies.map((buddy: Buddy, index) => {
+        return (
+          <div
+            className={classNames("buddy-small", { selected: myBuddy === buddy })}
+            key={index}
+            onClick={() => {
+              setMyBuddy(buddy);
+            }}
+          >
+            <img src={buddy.url} alt="buddy-image" />
+          </div>
+        );
+      });
+  },[buddies,myBuddy])
 
   const onChooseOne = () => {
     if (nameRef.current && nameRef.current.value) {
