@@ -5,12 +5,13 @@ import React, {
   useEffect,
   useRef,
   useState,
-  useMemo
+  useMemo,
 } from "react";
 import "./work-buddies.css";
 import classNames from "classnames";
 import { Buddy } from "./BuddyInterface";
 import { BuddiesContext } from "../BuddiesContext";
+import MyWorkBuddy from "./MyWorkBuddy";
 
 const WorkBuddies = () => {
   const [buddies, setBuddies] = useState<Buddy[]>([]);
@@ -20,11 +21,9 @@ const WorkBuddies = () => {
   const nameRef = useRef<HTMLInputElement>(null);
 
   //useContext
-  const { contextData, setData } = useContext(BuddiesContext);
+  const { setData } = useContext(BuddiesContext);
 
-  
-
-  //useCallback because of an expensive function
+  //useCallback
   const fetchBuddies = useCallback(async () => {
     try {
       const response = await fetch(
@@ -32,9 +31,13 @@ const WorkBuddies = () => {
       );
       const data = await response.json();
 
-      const randomIndexes = [];
-      for (let i = 0; i < 9; i++) {
-        randomIndexes.push(Math.floor(Math.random() * 100));
+      const randomIndexes: number[] = [];
+
+      while (randomIndexes.length < 9) {
+        const randomNumber = Math.floor(Math.random() * 100);
+        if (!randomIndexes.includes(randomNumber)) {
+          randomIndexes.push(randomNumber);
+        }
       }
 
       const todaysBuddies: Buddy[] = randomIndexes.map((index: number) => {
@@ -52,32 +55,29 @@ const WorkBuddies = () => {
     }
   }, [setBuddies]);
 
-  useEffect(() => {
-    console.log(buddies);
-  }, [buddies]);
-
   //useMemo
-  const displayBuddies = useMemo(()=>{
+  const displayBuddies = useMemo(() => {
     return buddies.map((buddy: Buddy, index) => {
-        return (
-          <div
-            className={classNames("buddy-small", { selected: myBuddy === buddy })}
-            key={index}
-            onClick={() => {
-              setMyBuddy(buddy);
-            }}
-          >
-            <img src={buddy.url} alt="buddy-image" />
-          </div>
-        );
-      });
-  },[buddies,myBuddy])
+      return (
+        <div
+          className={classNames("buddy-small", { selected: myBuddy === buddy })}
+          key={index}
+          onClick={() => {
+            setMyBuddy(buddy);
+          }}
+        >
+          <img src={buddy.url} alt="buddy-image" />
+        </div>
+      );
+    });
+  }, [buddies, myBuddy]);
 
   const onChooseOne = () => {
     if (nameRef.current && nameRef.current.value) {
       setMyBuddy((prev) => ({
         ...(prev as Buddy),
         name: nameRef.current!.value,
+        isMine: true,
       }));
     }
 
@@ -88,7 +88,10 @@ const WorkBuddies = () => {
     const updatedBuddies = buddies;
     updatedBuddies.forEach((buddy) => {
       if (buddy.url === myBuddy.url) {
-        buddy.name = nameRef.current!.value;
+        if (nameRef.current?.value) {
+          buddy.name = nameRef.current!.value;
+        }
+        buddy.isMine = true;
       }
     });
     setBuddies(updatedBuddies);
@@ -100,17 +103,13 @@ const WorkBuddies = () => {
     if (isBuddyChosen) {
       setData(buddies);
     }
-  }, [isBuddyChosen]);
-
-  useEffect(() => {
-    console.log(myBuddy);
-  }, [myBuddy]);
+  }, [isBuddyChosen, setData, buddies]);
 
   return (
     <div className="work-buddies">
       {!buddies.length && !isBuddyChosen && (
         <Fragment>
-          <h3>Let's get you a work buddy for this session!</h3>
+          <h3 className="info">Let's get you a work buddy for this session!</h3>
           <button className="get-options green" onClick={fetchBuddies}>
             get options
           </button>
@@ -131,6 +130,7 @@ const WorkBuddies = () => {
           </button>
         </Fragment>
       )}
+      {isBuddyChosen && myBuddy && <MyWorkBuddy myBuddy={myBuddy} />}
     </div>
   );
 };
