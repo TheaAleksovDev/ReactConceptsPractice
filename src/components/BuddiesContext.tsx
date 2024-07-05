@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Buddy } from "./WorkBuddies/BuddyInterface";
 
 interface BuddiesContextType {
@@ -8,22 +8,19 @@ interface BuddiesContextType {
 
 export const BuddiesContext = createContext<BuddiesContextType>({
   contextData: [],
-  setData: (data: Buddy[]) => {},
+  setData: () => {},
 });
 
 export const BuddiesContextProvider = ({ children }: any) => {
   const [contextData, setContextData] = useState<Buddy[]>();
 
-  const setData = (data: Buddy[]) => {
-    setContextData(data);
-  };
 
   useEffect(() => {
     console.log(contextData);
   }, [contextData]);
 
   return (
-    <BuddiesContext.Provider value={{ contextData, setData }}>
+    <BuddiesContext.Provider value={{ contextData, setData: setContextData }}>
       {children}
     </BuddiesContext.Provider>
   );

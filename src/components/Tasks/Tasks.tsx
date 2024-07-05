@@ -70,7 +70,7 @@ const Tasks = () => {
       : tasks;
 
    //useMemo
-  const displayTasks = useMemo(()=>{
+  const tasksToDisplay = useMemo(()=>{
     const deleteTask = (task: string) => {
       const filteredTasks = tasks.filter((element) => element.task !== task);
       setTasks(filteredTasks);
@@ -90,7 +90,7 @@ const Tasks = () => {
   },[filteredTasks, tasks])
 
   //useMemo
-  const displayContext = useMemo(()=>{
+  const buddies = useMemo(()=>{
     return contextData?.map((buddy: Buddy, index) => {
       return (
         <div className="buddy-smaller" key={index}>
@@ -102,7 +102,7 @@ const Tasks = () => {
 
   return (
     <div className="tasks">
-      <div className="buddies-smaller">{contextData && displayContext}</div>
+      <div className="buddies-smaller">{ buddies}</div>
       {!openCreateTask && (
         <button
           onClick={() => {
@@ -168,7 +168,7 @@ const Tasks = () => {
         </div>
       )}
 
-      <div className="tasks">{tasks && displayTasks}</div>
+      <div className="tasks">{tasks && tasksToDisplay}</div>
     </div>
   );
 };

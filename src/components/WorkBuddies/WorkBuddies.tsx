@@ -1,11 +1,11 @@
 import React, {
-  Fragment,
   useCallback,
   useContext,
   useEffect,
   useRef,
   useState,
   useMemo,
+  ChangeEvent,
 } from "react";
 import "./work-buddies.css";
 import classNames from "classnames";
@@ -18,7 +18,12 @@ const WorkBuddies = () => {
   const [myBuddy, setMyBuddy] = useState<Buddy>();
   const [isBuddyChosen, setIsBuddyChosen] = useState<boolean>(false);
   //useRef
+  const [name, setName] = useState<string>();
   const nameRef = useRef<HTMLInputElement>(null);
+
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
 
   //useContext
   const { setData } = useContext(BuddiesContext);
@@ -56,7 +61,7 @@ const WorkBuddies = () => {
   }, [setBuddies]);
 
   //useMemo
-  const displayBuddies = useMemo(() => {
+  const buddiesToDisplayed = useMemo(() => {
     return buddies.map((buddy: Buddy, index) => {
       return (
         <div
@@ -85,13 +90,15 @@ const WorkBuddies = () => {
       return;
     }
 
-    const updatedBuddies = buddies;
-    updatedBuddies.forEach((buddy) => {
+    const updatedBuddies = buddies.map((buddy) => {
       if (buddy.url === myBuddy.url) {
-        if (nameRef.current?.value) {
-          buddy.name = nameRef.current!.value;
-        }
-        buddy.isMine = true;
+        return {
+          ...buddy,
+          name: nameRef.current?.value ? nameRef.current?.value : buddy.name,
+          isMine: true,
+        };
+      } else {
+        return { ...buddy };
       }
     });
     setBuddies(updatedBuddies);
@@ -103,34 +110,39 @@ const WorkBuddies = () => {
     if (isBuddyChosen) {
       setData(buddies);
     }
+
+    if (buddies && !isBuddyChosen) {
+      nameRef.current?.focus();
+    }
   }, [isBuddyChosen, setData, buddies]);
 
   return (
     <div className="work-buddies">
       {!buddies.length && !isBuddyChosen && (
-        <Fragment>
+        <>
           <h3 className="info">Let's get you a work buddy for this session!</h3>
           <button className="get-options green" onClick={fetchBuddies}>
             get options
           </button>
-        </Fragment>
+        </>
       )}
       {buddies && !isBuddyChosen && (
-        <div className="buddies-container">{displayBuddies}</div>
+        <div className="buddies-container">{buddiesToDisplayed}</div>
       )}
       {buddies.length > 1 && !isBuddyChosen && (
-        <Fragment>
+        <>
           <input
             type="text"
             placeholder="give him a name or we'll keep his default one"
             ref={nameRef}
+            onChange={handleNameChange}
           />
           <button className="green" onClick={onChooseOne}>
             choose one!
           </button>
-        </Fragment>
+        </>
       )}
-      {isBuddyChosen && myBuddy && <MyWorkBuddy myBuddy={myBuddy} />}
+      {isBuddyChosen && myBuddy && <MyWorkBuddy name={myBuddy.name} />}
     </div>
   );
 };

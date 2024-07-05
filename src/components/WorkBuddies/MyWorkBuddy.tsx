@@ -1,14 +1,10 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import {  useContext, useEffect, useState } from "react";
 import { BuddiesContext } from "../BuddiesContext";
 import classNames from "classnames";
 import "./work-buddies.css";
 import { useReducer } from "react";
 import { Buddy } from "./BuddyInterface";
 import { memo } from "react";
-
-interface propsInterface {
-  myBuddy: Buddy;
-}
 
 const reducer = (
   index: number,
@@ -17,14 +13,16 @@ const reducer = (
   switch (action.type) {
     case "next":
       if (action.contextData) {
-        if (index + 1 < action.contextData.length) return index + 1;
-        else return 0;
+        if (index + 1 < action.contextData.length) {
+          return index + 1;
+        } else {
+          return 0;
+        }
       } else return 0;
 
     case "prev":
       if (action.contextData) {
-        if (index - 1 > -1) return index - 1;
-        else return action.contextData.length - 1;
+        return index - 1 > -1 ? index - 1 : action.contextData.length - 1;
       } else return 0;
 
     case "my-buddy":
@@ -37,25 +35,24 @@ const reducer = (
   }
 };
 
-const MyWorkBuddy = memo(({ myBuddy }: propsInterface) => {
+const MyWorkBuddy = memo(({ name }: { name: string }) => {
   const { contextData } = useContext(BuddiesContext);
 
   //useReducer
   const [currentBuddyIndex, dispatch] = useReducer(reducer, 0);
-  const [buddy, setBuddy] = useState<Buddy>();
+  const [BuddysName, setBuddysName] = useState<string>();
   const [myBuddyIndex, setMyBuddyIndex] = useState<number>();
 
-  //I am aware that I can get "buddy" from contextData and that I'm not actually using it,
-  //but I included both concepts just for practice (memo and useContext)
-
   useEffect(() => {
-    if (myBuddy) {
-      setBuddy(myBuddy);
+    if (name) {
+      setBuddysName(name);
     }
-  }, [myBuddy]);
+  }, [name]);
 
   useEffect(() => {
-    if (!contextData) return;
+    if (!contextData) {
+      return;
+    }
     contextData.forEach((element, index) => {
       if (element.isMine) {
         setMyBuddyIndex(index);
@@ -63,11 +60,18 @@ const MyWorkBuddy = memo(({ myBuddy }: propsInterface) => {
     });
   }, [contextData]);
 
+  //would make more sense if I just used .isMine to conditionally add class to name, but BuddysName is for practice
   return (
-    <Fragment>
+    <>
       {contextData && (
         <div>
-          <h3 className="buddy-name">{contextData[currentBuddyIndex].name}</h3>
+          <h3
+            className={classNames("buddy-name", {
+              "mine-name": contextData[currentBuddyIndex].name === BuddysName,
+            })}
+          >
+            {contextData[currentBuddyIndex].name}
+          </h3>
           <div
             className={classNames("buddy-big", {
               mine: contextData[currentBuddyIndex].isMine,
@@ -78,7 +82,7 @@ const MyWorkBuddy = memo(({ myBuddy }: propsInterface) => {
         </div>
       )}
       {contextData && (
-        <Fragment>
+        <>
           <div className="actions">
             <button
               className="green"
@@ -97,7 +101,7 @@ const MyWorkBuddy = memo(({ myBuddy }: propsInterface) => {
               next
             </button>
           </div>
-        </Fragment>
+        </>
       )}
       {myBuddyIndex !== undefined && (
         <button
@@ -112,7 +116,7 @@ const MyWorkBuddy = memo(({ myBuddy }: propsInterface) => {
       <p className="grey">
         just some friends for motivation while you work on your tasks
       </p>
-    </Fragment>
+    </>
   );
 });
 export default MyWorkBuddy;

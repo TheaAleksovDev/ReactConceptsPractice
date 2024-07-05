@@ -52,6 +52,10 @@ button {
 }
 .mine {
   border: 5px solid rgb(154, 32, 32);
+
+}
+.mine-name{
+  background-color: rgb(154, 32, 32);
 }
 .actions {
   margin-top: 10px;
