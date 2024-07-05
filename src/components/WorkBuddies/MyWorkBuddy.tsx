@@ -13,11 +13,7 @@ const reducer = (
   switch (action.type) {
     case "next":
       if (action.contextData) {
-        if (index + 1 < action.contextData.length) {
-          return index + 1;
-        } else {
-          return 0;
-        }
+        return (index + 1 < action.contextData.length) ? index + 1 : 0  
       } else return 0;
 
     case "prev":
@@ -26,9 +22,7 @@ const reducer = (
       } else return 0;
 
     case "my-buddy":
-      if (action.myBuddyIndex) {
-        return action.myBuddyIndex;
-      } else return 0;
+      return (action.myBuddyIndex) ? action.myBuddyIndex : 0;  
 
     default:
       return 1;
@@ -40,14 +34,9 @@ const MyWorkBuddy = memo(({ name }: { name: string }) => {
 
   //useReducer
   const [currentBuddyIndex, dispatch] = useReducer(reducer, 0);
-  const [BuddysName, setBuddysName] = useState<string>();
   const [myBuddyIndex, setMyBuddyIndex] = useState<number>();
 
-  useEffect(() => {
-    if (name) {
-      setBuddysName(name);
-    }
-  }, [name]);
+
 
   useEffect(() => {
     if (!contextData) {
@@ -67,7 +56,7 @@ const MyWorkBuddy = memo(({ name }: { name: string }) => {
         <div>
           <h3
             className={classNames("buddy-name", {
-              "mine-name": contextData[currentBuddyIndex].name === BuddysName,
+              "mine-name": contextData[currentBuddyIndex].name === name,
             })}
           >
             {contextData[currentBuddyIndex].name}

@@ -1,4 +1,4 @@
-import React, {
+import {
   useCallback,
   useContext,
   useEffect,
@@ -18,7 +18,7 @@ const WorkBuddies = () => {
   const [myBuddy, setMyBuddy] = useState<Buddy>();
   const [isBuddyChosen, setIsBuddyChosen] = useState<boolean>(false);
   //useRef
-  const [name, setName] = useState<string>();
+  const [name, setName] = useState<string>("");
   const nameRef = useRef<HTMLInputElement>(null);
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -78,10 +78,10 @@ const WorkBuddies = () => {
   }, [buddies, myBuddy]);
 
   const onChooseOne = () => {
-    if (nameRef.current && nameRef.current.value) {
+    if (name) {
       setMyBuddy((prev) => ({
         ...(prev as Buddy),
-        name: nameRef.current!.value,
+        name: name,
         isMine: true,
       }));
     }
@@ -94,7 +94,7 @@ const WorkBuddies = () => {
       if (buddy.url === myBuddy.url) {
         return {
           ...buddy,
-          name: nameRef.current?.value ? nameRef.current?.value : buddy.name,
+          name: name ? name : buddy.name,
           isMine: true,
         };
       } else {
