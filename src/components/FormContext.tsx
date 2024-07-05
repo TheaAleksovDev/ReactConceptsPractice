@@ -16,15 +16,12 @@ export const FormContextDisabledProvider = ({ children }: any) => {
   useEffect(() => {
     console.log(isDisabled);
   }, [isDisabled]);
-  const toggleDisabled = () => {
-    setIsDisabled((prev) => !prev);
-  };
 
   return (
     <FormDisabledContext.Provider
       value={{
         isDisabled,
-        setDisabled: toggleDisabled,
+        setDisabled: ()=>{setIsDisabled((prev) => !prev)},
       }}
     >
       {children}
