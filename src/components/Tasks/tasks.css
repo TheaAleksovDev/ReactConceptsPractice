@@ -27,6 +27,12 @@ button {
 .red:hover {
   background-color: #7a2121;
 }
+input:disabled, button:disabled{
+  background-color: rgb(87, 87, 87) !important;
+  color: rgb(172, 172, 172);
+  border: none;
+}
+
 
 .tasks {
   display: flex;

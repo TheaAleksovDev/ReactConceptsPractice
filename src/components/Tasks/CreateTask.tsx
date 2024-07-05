@@ -1,16 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./tasks.css";
+import { FormDisabledContext } from "../FormContext";
 
 type CreateTaskProps = {
-  categories: string[]; 
-  createItem: (task: string, category: string, isUrgent: boolean) => void; 
-  close: () => void; 
-}
+  categories: string[];
+  createItem: (task: string, category: string, isUrgent: boolean) => void;
+  close: () => void;
+};
 
 const CreateTask = (props: CreateTaskProps) => {
   const [selectedCategory, setSelectedCategory] = useState(props.categories[0]);
   const [isUrgent, setIsUrgent] = useState(false);
   const [task, setTask] = useState("");
+
+  const { isDisabled } = useContext(FormDisabledContext);
 
   const handleTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTask(event.target.value);
@@ -18,13 +21,21 @@ const CreateTask = (props: CreateTaskProps) => {
 
   return (
     <div className="create-task">
-      <input type="text" name="task" value={task} onChange={handleTaskChange} />
+      <input
+        disabled={isDisabled}
+
+        type="text"
+        name="task"
+        value={task}
+        onChange={handleTaskChange}
+      />
 
       <div className="options">
         <div className="categories">
           {props.categories.map((category: string) => {
             return (
               <button
+                disabled={isDisabled}
                 key={category}
                 className="category"
                 style={
@@ -42,6 +53,7 @@ const CreateTask = (props: CreateTaskProps) => {
           })}
         </div>
         <button
+          disabled={isDisabled}
           style={isUrgent ? { backgroundColor: "#9e2b2b", color: "white" } : {}}
           className="priority"
           onClick={() => {
@@ -52,6 +64,7 @@ const CreateTask = (props: CreateTaskProps) => {
         </button>
       </div>
       <button
+      disabled={isDisabled}
         onClick={() => {
           if (task) {
             props.createItem(task, selectedCategory, isUrgent);
@@ -62,6 +75,7 @@ const CreateTask = (props: CreateTaskProps) => {
       >
         add task
       </button>
+     
     </div>
   );
 };

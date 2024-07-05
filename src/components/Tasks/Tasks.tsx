@@ -6,6 +6,7 @@ import CreateTask from "./CreateTask";
 import { useContext } from "react";
 import { BuddiesContext } from "../BuddiesContext";
 import { Buddy } from "../WorkBuddies/BuddyInterface";
+import { FormDisabledContext } from "../FormContext";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<TaskType[]>([]);
@@ -14,6 +15,7 @@ const Tasks = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isUrgent, setIsUrgent] = useState(false);
   const { contextData } = useContext(BuddiesContext);
+  const { setDisabled, isDisabled } = useContext(FormDisabledContext);
 
   useEffect(() => {
     const savedTasks = localStorage.getItem("tasks");
@@ -30,8 +32,6 @@ const Tasks = () => {
       )
     );
   };
-
-
 
   useEffect(() => {
     if (tasks.length > 0) {
@@ -69,8 +69,8 @@ const Tasks = () => {
       ? filterTasks(isUrgent)(selectedCategory)
       : tasks;
 
-   //useMemo
-  const tasksToDisplay = useMemo(()=>{
+  //useMemo
+  const tasksToDisplay = useMemo(() => {
     const deleteTask = (task: string) => {
       const filteredTasks = tasks.filter((element) => element.task !== task);
       setTasks(filteredTasks);
@@ -87,10 +87,10 @@ const Tasks = () => {
         />
       );
     });
-  },[filteredTasks, tasks])
+  }, [filteredTasks, tasks]);
 
   //useMemo
-  const buddies = useMemo(()=>{
+  const buddies = useMemo(() => {
     return contextData?.map((buddy: Buddy, index) => {
       return (
         <div className="buddy-smaller" key={index}>
@@ -98,11 +98,15 @@ const Tasks = () => {
         </div>
       );
     });
-  },[contextData])
+  }, [contextData]);
 
+  
   return (
     <div className="tasks">
-      <div className="buddies-smaller">{ buddies}</div>
+      <div className="buddies-smaller">{buddies}</div>
+      {openCreateTask && <button onClick={setDisabled} className={isDisabled ? "green": "red"}>
+        {isDisabled ? "enable" : "disable"} form
+      </button>}
       {!openCreateTask && (
         <button
           onClick={() => {
