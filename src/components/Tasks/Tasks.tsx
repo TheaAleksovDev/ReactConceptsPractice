@@ -1,15 +1,21 @@
 import { type Task as TaskType } from "./TaskInterface";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Task from "./Task";
 import "./tasks.css";
 import CreateTask from "./CreateTask";
+import { useContext } from "react";
+import { BuddiesContext } from "../BuddiesContext";
+import { Buddy } from "../WorkBuddies/BuddyInterface";
+import { FormDisabledContext } from "../FormContext";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [openCreateTask, setOpenCreateTask] = useState(false);
- const categories = ["work", "life", "school"];
+  const categories = ["work", "life", "school"];
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isUrgent, setIsUrgent] = useState(false);
+  const { contextData } = useContext(BuddiesContext);
+  const { toggleDisabled, isDisabled } = useContext(FormDisabledContext);
 
   useEffect(() => {
     const savedTasks = localStorage.getItem("tasks");
@@ -27,12 +33,6 @@ const Tasks = () => {
     );
   };
 
-  const deleteTask = (task: string) => {
-    const filteredTasks = tasks.filter((element) => element.task !== task);
-    setTasks(filteredTasks);
-    localStorage.setItem("tasks", JSON.stringify(filteredTasks));
-  };
-
   useEffect(() => {
     if (tasks.length > 0) {
       localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -45,7 +45,6 @@ const Tasks = () => {
     if (existingTask) {
       return;
     }
-
 
     setTasks((prev) => [
       ...prev,
@@ -70,19 +69,46 @@ const Tasks = () => {
       ? filterTasks(isUrgent)(selectedCategory)
       : tasks;
 
-  const displayTasks = filteredTasks.map((item) => {
-    return (
-      <Task
-        key={item.task}
-        {...item}
-        markCompleted={markCompleted}
-        deleteTask={deleteTask}
-      />
-    );
-  });
+  const tasksToDisplay = useMemo(() => {
+    const deleteTask = (task: string) => {
+      const filteredTasks = tasks.filter((element) => element.task !== task);
+      setTasks(filteredTasks);
+      localStorage.setItem("tasks", JSON.stringify(filteredTasks));
+    };
+
+    return filteredTasks.map((item) => {
+      return (
+        <Task
+          key={item.task}
+          {...item}
+          markCompleted={markCompleted}
+          deleteTask={deleteTask}
+        />
+      );
+    });
+  }, [filteredTasks, tasks]);
+
+  const buddies = useMemo(() => {
+    return contextData?.map((buddy: Buddy, index) => {
+      return (
+        <div className="buddy-smaller" key={index}>
+          <img src={buddy.url} alt="buddy-image" />
+        </div>
+      );
+    });
+  }, [contextData]);
 
   return (
     <div className="tasks">
+      <div className="buddies-smaller">{buddies}</div>
+      {openCreateTask && (
+        <button
+          onClick={toggleDisabled}
+          className={isDisabled ? "green" : "red"}
+        >
+          {isDisabled ? "enable" : "disable"} form
+        </button>
+      )}
       {!openCreateTask && (
         <button
           onClick={() => {
@@ -148,7 +174,7 @@ const Tasks = () => {
         </div>
       )}
 
-      <div className="tasks">{tasks && displayTasks}</div>
+      <div className="tasks">{tasks && tasksToDisplay}</div>
     </div>
   );
 };

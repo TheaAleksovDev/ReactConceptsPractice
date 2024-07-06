@@ -1,0 +1,94 @@
+.work-buddies {
+  margin-left: 50px;
+  width: 450px;
+  height: 88vh;
+  border: 3px solid #45a049;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  flex-direction: column;
+}
+
+button {
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.green:hover {
+  background-color: #45a049;
+}
+.buddy-name {
+  font-size: 16px;
+  color: white;
+  font-weight: 500;
+  background-color: #2c6830;
+  padding: 5px 10px;
+  border-radius: 20px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+.buddy-big {
+  border: 3px solid #45a049;
+}
+.buddy-big img {
+  width: 200px;
+}
+.info {
+  color: lightslategray;
+}
+.grey {
+  color: rgb(165, 161, 161);
+  width: 300px;
+}
+.mine {
+  border: 5px solid rgb(154, 32, 32);
+
+}
+.mine-name{
+  background-color: rgb(154, 32, 32);
+}
+.actions {
+  margin-top: 10px;
+}
+.buddy-small {
+  width: 120px;
+
+  box-sizing: border-box;
+}
+.buddy-small img {
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+}
+.buddy-small:hover {
+  cursor: pointer;
+}
+.buddies-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.selected {
+  border: 2px solid #45a049;
+}
+
+input {
+  width: 90%;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: #2c6830;
+  margin-bottom: 10px;
+}

@@ -27,6 +27,12 @@ button {
 .red:hover {
   background-color: #7a2121;
 }
+input:disabled,
+button:disabled {
+  background-color: rgb(87, 87, 87) !important;
+  color: rgb(172, 172, 172);
+  border: none;
+}
 
 .tasks {
   display: flex;
@@ -34,7 +40,7 @@ button {
   justify-content: top;
   flex-direction: column;
   width: 800px;
-  height: 80vh;
+  height: 88vh;
   gap: 10px;
   overflow-y: auto;
 }
@@ -136,6 +142,16 @@ input {
   font-size: 14px;
   box-sizing: border-box;
   outline: #2c6830;
+}
+.buddy-smaller img {
+  width: 80px;
+}
+.buddies-smaller {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
 }
 
 .filter {

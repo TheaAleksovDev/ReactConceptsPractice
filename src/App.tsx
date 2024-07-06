@@ -1,11 +1,18 @@
-import React from 'react';
-import './App.css';
-import Tasks from './components/Tasks';
-
+import "./App.css";
+import Tasks from "./components/Tasks/Tasks";
+import WorkBuddies from "./components/WorkBuddies/WorkBuddies";
+import { BuddiesContextProvider } from "./components/BuddiesContext";
+import { FormContextDisabledProvider } from "./components/FormContext";
 function App() {
   return (
     <div className="App">
-      <Tasks></Tasks>
+      
+      <BuddiesContextProvider>
+        <FormContextDisabledProvider>
+        <Tasks />
+        </FormContextDisabledProvider>
+        <WorkBuddies />
+      </BuddiesContextProvider>
     </div>
   );
 }
