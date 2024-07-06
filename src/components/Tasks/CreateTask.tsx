@@ -23,7 +23,6 @@ const CreateTask = (props: CreateTaskProps) => {
     <div className="create-task">
       <input
         disabled={isDisabled}
-
         type="text"
         name="task"
         value={task}
@@ -64,7 +63,7 @@ const CreateTask = (props: CreateTaskProps) => {
         </button>
       </div>
       <button
-      disabled={isDisabled}
+        disabled={isDisabled}
         onClick={() => {
           if (task) {
             props.createItem(task, selectedCategory, isUrgent);
@@ -75,7 +74,6 @@ const CreateTask = (props: CreateTaskProps) => {
       >
         add task
       </button>
-     
     </div>
   );
 };

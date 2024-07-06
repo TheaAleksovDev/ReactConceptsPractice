@@ -15,7 +15,7 @@ const Tasks = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isUrgent, setIsUrgent] = useState(false);
   const { contextData } = useContext(BuddiesContext);
-  const { setDisabled, isDisabled } = useContext(FormDisabledContext);
+  const { toggleDisabled, isDisabled } = useContext(FormDisabledContext);
 
   useEffect(() => {
     const savedTasks = localStorage.getItem("tasks");
@@ -69,7 +69,6 @@ const Tasks = () => {
       ? filterTasks(isUrgent)(selectedCategory)
       : tasks;
 
-  //useMemo
   const tasksToDisplay = useMemo(() => {
     const deleteTask = (task: string) => {
       const filteredTasks = tasks.filter((element) => element.task !== task);
@@ -89,7 +88,6 @@ const Tasks = () => {
     });
   }, [filteredTasks, tasks]);
 
-  //useMemo
   const buddies = useMemo(() => {
     return contextData?.map((buddy: Buddy, index) => {
       return (
@@ -100,13 +98,17 @@ const Tasks = () => {
     });
   }, [contextData]);
 
-  
   return (
     <div className="tasks">
       <div className="buddies-smaller">{buddies}</div>
-      {openCreateTask && <button onClick={setDisabled} className={isDisabled ? "green": "red"}>
-        {isDisabled ? "enable" : "disable"} form
-      </button>}
+      {openCreateTask && (
+        <button
+          onClick={toggleDisabled}
+          className={isDisabled ? "green" : "red"}
+        >
+          {isDisabled ? "enable" : "disable"} form
+        </button>
+      )}
       {!openCreateTask && (
         <button
           onClick={() => {

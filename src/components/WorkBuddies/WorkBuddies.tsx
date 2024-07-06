@@ -17,18 +17,15 @@ const WorkBuddies = () => {
   const [buddies, setBuddies] = useState<Buddy[]>([]);
   const [myBuddy, setMyBuddy] = useState<Buddy>();
   const [isBuddyChosen, setIsBuddyChosen] = useState<boolean>(false);
-  //useRef
-  const [name, setName] = useState<string>("");
+  const [name, setName] = useState("");
   const nameRef = useRef<HTMLInputElement>(null);
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
 
-  //useContext
   const { setData } = useContext(BuddiesContext);
 
-  //useCallback
   const fetchBuddies = useCallback(async () => {
     try {
       const response = await fetch(
@@ -60,7 +57,6 @@ const WorkBuddies = () => {
     }
   }, [setBuddies]);
 
-  //useMemo
   const buddiesToDisplayed = useMemo(() => {
     return buddies.map((buddy: Buddy, index) => {
       return (

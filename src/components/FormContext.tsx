@@ -2,12 +2,12 @@ import { createContext, useEffect, useState } from "react";
 
 interface FormDisabledContextType {
   isDisabled: boolean | undefined;
-  setDisabled: () => void;
+  toggleDisabled: () => void;
 }
 
 export const FormDisabledContext = createContext<FormDisabledContextType>({
   isDisabled: false,
-  setDisabled: () => {},
+  toggleDisabled: () => {},
 });
 
 export const FormContextDisabledProvider = ({ children }: any) => {
@@ -21,7 +21,9 @@ export const FormContextDisabledProvider = ({ children }: any) => {
     <FormDisabledContext.Provider
       value={{
         isDisabled,
-        setDisabled: ()=>{setIsDisabled((prev) => !prev)},
+        toggleDisabled: () => {
+          setIsDisabled((prev) => !prev);
+        },
       }}
     >
       {children}

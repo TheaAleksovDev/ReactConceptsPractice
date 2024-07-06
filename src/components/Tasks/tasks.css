@@ -27,12 +27,12 @@ button {
 .red:hover {
   background-color: #7a2121;
 }
-input:disabled, button:disabled{
+input:disabled,
+button:disabled {
   background-color: rgb(87, 87, 87) !important;
   color: rgb(172, 172, 172);
   border: none;
 }
-
 
 .tasks {
   display: flex;
@@ -143,10 +143,10 @@ input {
   box-sizing: border-box;
   outline: #2c6830;
 }
-.buddy-smaller img{
+.buddy-smaller img {
   width: 80px;
 }
-.buddies-smaller{
+.buddies-smaller {
   display: flex;
   align-items: center;
   justify-content: space-between;

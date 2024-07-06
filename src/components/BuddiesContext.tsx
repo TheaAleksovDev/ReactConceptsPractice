@@ -14,7 +14,6 @@ export const BuddiesContext = createContext<BuddiesContextType>({
 export const BuddiesContextProvider = ({ children }: any) => {
   const [contextData, setContextData] = useState<Buddy[]>();
 
-
   useEffect(() => {
     console.log(contextData);
   }, [contextData]);

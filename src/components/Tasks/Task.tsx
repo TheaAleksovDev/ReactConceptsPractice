@@ -1,6 +1,6 @@
 import { Task as TaskType } from "./TaskInterface";
 import "./tasks.css";
-import classNames from 'classnames';
+import classNames from "classnames";
 
 export interface TaskProps extends TaskType {
   markCompleted: (task: string) => void;
@@ -11,7 +11,9 @@ const Task = (props: TaskProps) => {
   return (
     <div className="task">
       <div className="task-content">
-       <p className={classNames('task-name', {'completed': props.isCompleted  })}>
+        <p
+          className={classNames("task-name", { completed: props.isCompleted })}
+        >
           {props.task}
         </p>
         {!props.isCompleted && (

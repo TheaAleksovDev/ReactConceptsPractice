@@ -1,4 +1,4 @@
-import {  useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BuddiesContext } from "../BuddiesContext";
 import classNames from "classnames";
 import "./work-buddies.css";
@@ -13,7 +13,7 @@ const reducer = (
   switch (action.type) {
     case "next":
       if (action.contextData) {
-        return (index + 1 < action.contextData.length) ? index + 1 : 0  
+        return index + 1 < action.contextData.length ? index + 1 : 0;
       } else return 0;
 
     case "prev":
@@ -22,7 +22,7 @@ const reducer = (
       } else return 0;
 
     case "my-buddy":
-      return (action.myBuddyIndex) ? action.myBuddyIndex : 0;  
+      return action.myBuddyIndex ? action.myBuddyIndex : 0;
 
     default:
       return 1;
@@ -32,11 +32,8 @@ const reducer = (
 const MyWorkBuddy = memo(({ name }: { name: string }) => {
   const { contextData } = useContext(BuddiesContext);
 
-  //useReducer
   const [currentBuddyIndex, dispatch] = useReducer(reducer, 0);
   const [myBuddyIndex, setMyBuddyIndex] = useState<number>();
-
-
 
   useEffect(() => {
     if (!contextData) {
